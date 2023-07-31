@@ -8,6 +8,6 @@ type UserBasic struct {
 	Email    string
 }
 
-func (table UserBasic) tablename() string {
-	return "userbasic"
+func (table UserBasic) TableName() string {
+	return "user_basic"
 }
