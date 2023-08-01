@@ -27,5 +27,16 @@ go get github.com/zeromicro/go-zero/core/utils@v1.5.4
 
 goctl api go -api core.api -dir . -style go_zero
 
+#发送验证码
+go get github.com/jordan-wright/email
 
+#存验证码用redis
+go get github.com/redis/go-redis/v9
 
+#本地启动redis
+redis-server.exe redis.windows.conf
+#进入redis操作
+redis-cli.exe -h 127.0.0.1 -p 6379
+
+#存identity 用uuid生成
+go get github.com/satori/go.uuid
