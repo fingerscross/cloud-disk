@@ -1,4 +1,15 @@
 # cloud-disk
+#git上传
+git add *
+git commit -m ""
+git push origin main
+
+#git拉取不到最新用以下命令
+git fetch --all  
+git reset --hard origin/master
+git pull
+
+
 
 GOPROXY=https://goproxy.cn,direct
 
