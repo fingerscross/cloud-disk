@@ -51,3 +51,6 @@ redis-cli.exe -h 127.0.0.1 -p 6379
 
 #存identity 用uuid生成
 go get github.com/satori/go.uuid
+
+#腾讯云cos https://console.cloud.tencent.com/cos/bucket
+#腾讯云cos sdk安装命令 go get -u github.com/tencentyun/cos-go-sdk-v5
