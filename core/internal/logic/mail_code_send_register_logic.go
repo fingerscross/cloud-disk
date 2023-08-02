@@ -32,7 +32,7 @@ func (l *MailCodeSendRegisterLogic) MailCodeSendRegister(req *types.MailCodeSend
 
 	//邮箱未被注册
 
-	count, err := models.Engine.Where("email=?", req.Email).Count(new(models.UserBasic))
+	count, err := l.svcCtx.Engine.Where("email=?", req.Email).Count(new(models.UserBasic))
 	if err != nil {
 		return nil, err
 	}
@@ -42,7 +42,7 @@ func (l *MailCodeSendRegisterLogic) MailCodeSendRegister(req *types.MailCodeSend
 	}
 	code := help.RandCode()
 	//存储验证码 key-email
-	models.RDB.Set(l.ctx, req.Email, code, time.Second*time.Duration(define.CodeExpire))
+	l.svcCtx.RDB.Set(l.ctx, req.Email, code, time.Second*time.Duration(define.CodeExpire))
 
 	//发送给用户验证码
 	err = help.MailSendCode(req.Email, code)

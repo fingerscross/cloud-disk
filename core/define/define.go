@@ -2,6 +2,7 @@ package define
 
 import (
 	"github.com/golang-jwt/jwt/v4"
+	"os"
 )
 
 type UserClaim struct {
@@ -19,3 +20,7 @@ var CodeLength = 6
 
 // 验证码过期时间
 var CodeExpire = 300
+
+// 腾讯云对象存储
+var TencentSecretKey = os.Getenv("TencentSecterKey")
+var TencentSecretID = os.Getenv("TencentSecterID")

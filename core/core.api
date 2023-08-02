@@ -14,6 +14,9 @@ service core-api {
 	//用户详情
 	@handler UserDetail
 	get /user/detail(UserDetailRequest) returns (UserDetailReply)
+
+	@handler FileUpload
+	post /file/upload(FileUploadRequest) returns(FileUploadReply)
 }
 
 type UserRegisterRequest {
@@ -48,4 +51,16 @@ type UserDetailRequest {
 type UserDetailReply {
 	Name  string `json:"name"`
 	Email string `json:"email"`
+}
+
+type FileUploadRequest {
+	Hash string `json:"hash,optional"`
+	Name string `json:"name,optional"`
+	Ext  string `json:"ext,optional"`
+	Size int64  `json:"size,optional"`
+	Path string `json:"path,optional"`
+}
+
+type FileUploadReply {
+	Identity string `json:"identity"`
 }
