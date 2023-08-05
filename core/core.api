@@ -15,9 +15,30 @@ service core-api {
 	@handler UserDetail
 	get /user/detail(UserDetailRequest) returns (UserDetailReply)
 
+}
+
+//加上server就是加上权限
+@server (
+	middleware :Auth
+)
+service core-api{
+	//文件上传
 	@handler FileUpload
 	post /file/upload(FileUploadRequest) returns(FileUploadReply)
+
+	//用户文件关联存储
+	@handler UserRepositorySave
+	post /user/respository/save(UserRepositorySaveRequest) returns (UserRepositorySaveReply)
 }
+
+type UserRepositorySaveRequest {
+	ParentId           int64  `json:"parentId"`
+	RepositoryIdentity string `json:"repositoryIdentity"`
+	Ext                string `json:"ext"`
+	Name               string `json:"name"`
+}
+
+type UserRepositorySaveReply{}
 
 type UserRegisterRequest {
 	Name     string `json:"name"`
@@ -63,4 +84,6 @@ type FileUploadRequest {
 
 type FileUploadReply {
 	Identity string `json:"identity"`
+	Ext      string `json:"ext"`
+	Name     string `json:"name"`
 }

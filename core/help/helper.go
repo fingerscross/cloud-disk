@@ -2,15 +2,21 @@ package help
 
 import (
 	"cloud-disk/core/define"
+	"context"
 	"crypto/md5"
 	"crypto/tls"
+	"errors"
 	"fmt"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/jordan-wright/email"
 	_ "github.com/jordan-wright/email"
 	uuid "github.com/satori/go.uuid"
+	"github.com/tencentyun/cos-go-sdk-v5"
 	"math/rand"
+	"net/http"
 	"net/smtp"
+	"net/url"
+	"path"
 	"time"
 )
 
@@ -31,6 +37,21 @@ func GenerateToken(id int, identity, name string) (string, error) {
 		return "", err
 	}
 	return tokenString, nil
+}
+
+// 解析token
+func AnakyzeToken(token string) (*define.UserClaim, error) {
+	uc := new(define.UserClaim)
+	claims, err := jwt.ParseWithClaims(token, uc, func(token *jwt.Token) (interface{}, error) {
+		return []byte(define.Jwtkey), nil
+	})
+	if err != nil {
+		return nil, err
+	}
+	if !claims.Valid {
+		return uc, errors.New("token is invaild")
+	}
+	return uc, err
 }
 
 func MailSendCode(mail, code string) error {
@@ -60,4 +81,26 @@ func RandCode() string {
 
 func UUID() string {
 	return uuid.NewV4().String()
+}
+
+func CosUpload(r *http.Request) (string, error) {
+	u, _ := url.Parse(define.CosBUcket)
+	b := &cos.BaseURL{BucketURL: u}
+	client := cos.NewClient(b, &http.Client{
+		Transport: &cos.AuthorizationTransport{
+			SecretID:  define.TencentSecretID,  // 用户的 SecretId，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
+			SecretKey: define.TencentSecretKey, // 用户的 SecretKey，建议使用子账号密钥，授权遵循最小权限指引，降低使用风险。子账号密钥获取可参见 https://cloud.tencent.com/document/product/598/37140
+		},
+	})
+	file, fileheader, err := r.FormFile("file")
+	//腾讯云中的路径与结果名字
+	key := "cloud-disk/" + UUID() + path.Ext(fileheader.Filename) //唯一id+后缀
+
+	_, err = client.Object.Put(
+		context.Background(), key, file, nil,
+	)
+	if err != nil {
+		panic(err)
+	}
+	return define.CosBUcket + "/" + key, nil //以访问链接的方式访问文件
 }

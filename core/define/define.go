@@ -24,3 +24,5 @@ var CodeExpire = 300
 // 腾讯云对象存储
 var TencentSecretKey = os.Getenv("TencentSecterKey")
 var TencentSecretID = os.Getenv("TencentSecterID")
+
+var CosBUcket = "https://go-cloud-disk-1310218422.cos.ap-nanjing.myqcloud.com"
