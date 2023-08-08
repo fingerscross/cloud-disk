@@ -1,6 +1,7 @@
 package logic
 
 import (
+	"cloud-disk/core/define"
 	"cloud-disk/core/help"
 	"cloud-disk/core/models"
 	"context"
@@ -36,11 +37,19 @@ func (l *UserLoginLogic) UserLogin(req *types.LoginRequest) (resp *types.LoginRe
 		return nil, errors.New("用户名或者密码错误")
 	}
 	//生成token
-	token, err := help.GenerateToken(user.Id, user.Identity, user.Name)
+	token, err := help.GenerateToken(user.Id, user.Identity, user.Name, define.TokenExpire)
 	if err != nil {
 		return nil, err
 	}
+
+	//用户刷新token的token
+	refreshToken, err := help.GenerateToken(user.Id, user.Identity, user.Name, define.RefreshTokenExpire)
+	if err != nil {
+		return nil, err
+	}
+
 	resp = new(types.LoginResponse)
 	resp.Token = token
+	resp.RefreshToken = refreshToken
 	return
 }

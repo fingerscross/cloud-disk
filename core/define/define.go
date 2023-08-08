@@ -26,3 +26,10 @@ var TencentSecretKey = os.Getenv("TencentSecterKey")
 var TencentSecretID = os.Getenv("TencentSecterID")
 
 var CosBUcket = "https://go-cloud-disk-1310218422.cos.ap-nanjing.myqcloud.com"
+
+// 文件分页默认参数
+var PageSize = 20
+var DateTime = "2006-01-02 15:04:05"
+
+var TokenExpire = 3600
+var RefreshTokenExpire = 36000
