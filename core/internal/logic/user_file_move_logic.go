@@ -28,7 +28,7 @@ func NewUserFileMoveLogic(ctx context.Context, svcCtx *svc.ServiceContext) *User
 func (l *UserFileMoveLogic) UserFileMove(req *types.UserFileMoveRequest, useridentity string) (resp *types.UserFileMoveReply, err error) {
 	//parentid
 	parentDate := new(models.UserRepository)
-	get, err := l.svcCtx.Engine.Where("identity = ? AND user_identity", req.ParentIdentity, useridentity).Get(parentDate)
+	get, err := l.svcCtx.Engine.Where("identity = ? AND user_identity = ?", req.ParentIdentity, useridentity).Get(parentDate)
 	if err != nil {
 		return nil, err
 	}

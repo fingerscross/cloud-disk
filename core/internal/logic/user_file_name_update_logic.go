@@ -38,7 +38,7 @@ func (l *UserFileNameUpdateLogic) UserFileNameUpdate(req *types.UserFileNameUpda
 		Name: req.Name,
 	}
 
-	_, err = l.svcCtx.Engine.Where("identity = ? AND user_identity", req.Identity, userIdentity).Update(data)
+	_, err = l.svcCtx.Engine.Where("identity = ? AND user_identity = ?", req.Identity, userIdentity).Update(data)
 	if err != nil {
 		return nil, err
 	}
