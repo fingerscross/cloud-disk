@@ -24,7 +24,6 @@ func NewFileUploadChunkLogic(ctx context.Context, svcCtx *svc.ServiceContext) *F
 }
 
 func (l *FileUploadChunkLogic) FileUploadChunk(req *types.FileUploadChunkRequest) (resp *types.FileUploadChunkReply, err error) {
-	// todo: add your logic here and delete this line
 
 	return
 }

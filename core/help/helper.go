@@ -145,7 +145,7 @@ func CosPartUpload(r *http.Request) (string, error) {
 
 	key := r.PostForm.Get("key")
 	UploadID := r.PostForm.Get("upload_id")
-	part_number, err := strconv.Atoi(r.PostForm.Get("part_number"))
+	partNumber, err := strconv.Atoi(r.PostForm.Get("part_number"))
 
 	if err != nil {
 		return "", err
@@ -161,7 +161,7 @@ func CosPartUpload(r *http.Request) (string, error) {
 
 	// opt 可选
 	resp, err := client.Object.UploadPart(
-		context.Background(), key, UploadID, part_number, bytes.NewReader(buffer.Bytes()), nil,
+		context.Background(), key, UploadID, partNumber, bytes.NewReader(buffer.Bytes()), nil,
 	)
 	if err != nil {
 		return "", err
